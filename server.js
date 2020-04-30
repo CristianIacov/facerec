@@ -13,36 +13,34 @@ const knex=require('knex');
     database : 'smartbrain'
   }
 });
- db.select('*').from('users').then(data=>{
- 	console.log(data)});
+
 app.use(bodyParser.json());
 app.use(cors());
-const database = {
 
-	users: [
-	{id: '123',
-	name: 'John',
-	password: 'cookies',
-	email: 'john@gmail.com',
-  entries: 0,
-  joined: new Date()
-
-	},
-		{id: '124',
-	name: 'Sally',
-	password: 'bananas',
-	email: 'sally@gmail.com',
-
-  entries: 0,
-  joined: new Date()
-
-	}]
-}
+db.select('*').from('users')
+.then(data => console.log(data));
 
 app.get ('/',(req,res)=> {
-	
-	res.send(database.users);
+
+ db.select('*').from('users')
+.then(data => res.send(data))
+}
+)
+
+app.post
+
+
+app.delete('/delete',(req,res) => {
+
+const username=req.body.name;
+db.delete('*').from('users')
+.where('name','=',username) 
+.then(res.send('succes'))
+//.catch(err=> res.status(400).json('unable to DELETE'))
+
+
 })
+
 app.post('/signin',(req,res)=> {
 db.select('email','hash').from('login')
 .where('email','=',req.body.email)
@@ -64,6 +62,11 @@ res.json(user[0])
 .catch(err=> res.status(400).json('wrong credentials'))
 
 })
+
+
+
+
+
 
 app.post('/register',(req,res)=> {
 	const {email, name , password}=req.body;
@@ -92,7 +95,13 @@ res.json(user[0]);})
 .catch(err => res.status(400).json('unable to register'))
 })
 
-app.get('/profile/:id',(req,res)=>{
+
+
+
+
+
+          
+          app.get('/profile/:id',(req,res)=>{
 const { id  }=req.params;
 db.select('*').from('users').where({id})
 .then(user => {
@@ -104,6 +113,35 @@ else
 .catch(err => res.status(400).json('error getting user'))
 
 })
+
+app.post('/editname',(req,res) => {
+	const email1=req.body.email;
+	
+
+	db('users')
+	.where({email: email1})
+	.update({name: req.body.name})
+	.catch((err => res.status(400).json('error getting user')))
+
+	return res.json('succes');
+
+
+})
+
+app.post('/editemail',(req,res) => {
+	const name1=req.body.name;
+	
+
+	db('users')
+	.where({name: name1})
+	.update({email: req.body.email})
+	.catch((err => res.status(400).json('error getting user')))
+
+	return res.json('succes');
+
+
+})
+
 
 app.put('/image',(req,res)=>{
 const { id }=req.body;
