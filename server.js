@@ -8,17 +8,22 @@ const knex = require('knex');
 const register = require('./controllers/register');
 const signin = require('./controllers/signin');
 //const profile = require('./controllers/profile');
-//process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
 
 const db = knex({
   client: 'pg',
   connection: {
    connectionString : process.env.DATABASE_URL,
-   ssl: true,
+   ssl: true
   }
-});
+})
 
-
+var reqTimer = setTimeout(function wakeUp() {
+   request("https://nameless-gorge-19527.herokuapp.com", function() {
+      console.log("WAKE UP DYNO");
+   });
+   return reqTimer = setTimeout(wakeUp, 1200000);
+}, 1200000);
 const app = express();
 
 app.use(cors())
