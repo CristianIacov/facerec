@@ -13,12 +13,12 @@ const signin = require('./controllers/signin');
 const db = knex({
   client: 'pg',
   connection: {
-   connectionString :'postgres://xhmsdecgqvzvmh:7d47d68ebabd371bd94a7984ab707e9fedbc81b282adf7c082cedbb1a67ce784@ec2-34-198-243-120.compute-1.amazonaws.com:5432/d7cripqnme8sim',
+   connectionString : process.env.DATABASE_URL,
    ssl: true
   }
 })
 
-
+console.log(process.env.DATABASE_URL);
 const app = express();
 
 app.use(cors())
