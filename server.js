@@ -30,16 +30,8 @@ app.get ('/',(req,res)=> {
 app.post
 
 
-app.delete('/delete',(req,res) => {
-
-const username=req.body.name;
-db.delete('*').from('users')
-.where('name','=',username) 
-.then(res.send('succes'))
-//.catch(err=> res.status(400).json('unable to DELETE'))
 
 
-})
 
 app.post('/signin',(req,res)=> {
 db.select('email','hash').from('login')
@@ -48,6 +40,7 @@ db.select('email','hash').from('login')
 	const isValid=bcrypt.compareSync(req.body.password,data[0].hash);
 if (isValid){
 	return db.select('*').from('users')
+
 
 
 .where('email','=',req.body.email)
@@ -62,6 +55,7 @@ res.json(user[0])
 .catch(err=> res.status(400).json('wrong credentials'))
 
 })
+
 
 
 
@@ -114,33 +108,8 @@ else
 
 })
 
-app.post('/editname',(req,res) => {
-	const email1=req.body.email;
-	
-
-	db('users')
-	.where({email: email1})
-	.update({name: req.body.name})
-	.catch((err => res.status(400).json('error getting user')))
-
-	return res.json('succes');
 
 
-})
-
-app.post('/editemail',(req,res) => {
-	const name1=req.body.name;
-	
-
-	db('users')
-	.where({name: name1})
-	.update({email: req.body.email})
-	.catch((err => res.status(400).json('error getting user')))
-
-	return res.json('succes');
-
-
-})
 
 
 app.put('/image',(req,res)=>{
